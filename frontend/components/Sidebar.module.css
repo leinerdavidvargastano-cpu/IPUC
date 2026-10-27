@@ -1,0 +1,117 @@
+.sidebar {
+  position: fixed; /* se queda quieto aunque la página haga scroll */
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--ancho-sidebar);
+  background: var(--azul-oscuro);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  z-index: 40;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 8px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--azul-principal);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+}
+
+.nombre {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.subtitulo {
+  margin: 0;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 24px;
+  flex: 1; /* ocupa el espacio sobrante y empuja el pie hacia abajo */
+}
+
+.enlace {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+}
+
+.enlace:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+/* Enlace de la sección actual */
+.activo {
+  background: var(--azul-principal);
+  color: #ffffff;
+}
+
+.pie {
+  margin: 0;
+  padding: 0 8px;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* Fondo oscuro del menú móvil: oculto por defecto */
+.fondo {
+  display: none;
+}
+
+/* ---------- Celulares y tabletas ---------- */
+@media (max-width: 900px) {
+  /* El sidebar se esconde fuera de la pantalla a la izquierda */
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+  }
+
+  /* Al abrirlo, vuelve a su lugar */
+  .abierto {
+    transform: translateX(0);
+  }
+
+  .fondo {
+    display: block;
+    position: fixed;
+    inset: 0; /* top, right, bottom y left en 0 */
+    background: rgba(11, 21, 51, 0.5);
+    opacity: 0;
+    pointer-events: none; /* no bloquea los clics mientras está invisible */
+    transition: opacity 0.25s ease;
+    z-index: 30;
+  }
+
+  .fondoVisible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}

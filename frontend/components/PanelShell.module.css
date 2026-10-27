@@ -1,0 +1,29 @@
+.contenedor {
+  min-height: 100vh;
+}
+
+/* Columna derecha: deja espacio a la izquierda para el sidebar fijo */
+.columna {
+  margin-left: var(--ancho-sidebar);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.principal {
+  flex: 1;
+  padding: 32px;
+  width: 100%;
+  max-width: 1280px;
+}
+
+/* En pantallas de 900px o menos (tabletas y teléfonos) */
+@media (max-width: 900px) {
+  .columna {
+    margin-left: 0; /* el sidebar pasa a ser un panel deslizable */
+  }
+
+  .principal {
+    padding: 20px 16px;
+  }
+}

@@ -1,0 +1,15 @@
+.encabezado {
+  margin-bottom: 24px;
+}
+
+.titulo {
+  margin: 0 0 4px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--texto);
+}
+
+.descripcion {
+  margin: 0;
+  color: var(--texto-secundario);
+}

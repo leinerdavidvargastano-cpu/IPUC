@@ -1,0 +1,80 @@
+.header {
+  position: sticky; /* se queda arriba al hacer scroll */
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 64px;
+  padding: 0 32px;
+  background: var(--superficie);
+  border-bottom: 1px solid var(--borde);
+}
+
+.titulo {
+  margin: 0;
+  font-weight: 600;
+  color: var(--texto);
+}
+
+.botonMenu {
+  display: none; /* oculto en computador */
+  border: 1px solid var(--borde);
+  background: var(--superficie);
+  color: var(--texto);
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.perfil {
+  margin-left: auto; /* empuja el perfil al extremo derecho */
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.datos {
+  text-align: right;
+}
+
+.usuario {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.rol {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--texto-secundario);
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--azul-claro);
+  color: var(--azul-principal);
+}
+
+@media (max-width: 900px) {
+  .header {
+    padding: 0 16px;
+  }
+
+  .botonMenu {
+    display: block;
+  }
+
+  /* En pantallas pequeñas ocultamos el nombre del usuario y dejamos el avatar */
+  .datos {
+    display: none;
+  }
+
+  .titulo {
+    font-size: 0.85rem;
+  }
+}
