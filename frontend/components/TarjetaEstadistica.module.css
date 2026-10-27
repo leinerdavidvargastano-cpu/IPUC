@@ -1,0 +1,56 @@
+.tarjeta {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 20px;
+}
+
+.cabecera {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.titulo {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--texto-secundario);
+}
+
+/* Cuadro con el icono */
+.icono {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0; /* evita que el cuadro se aplaste si el título es largo */
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--azul-claro);
+  color: var(--azul-principal);
+}
+
+.valor {
+  margin: 12px 0 4px;
+  font-size: 1.9rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--texto);
+}
+
+/* Colores opcionales cuando hay tendencia */
+.positiva {
+  color: var(--exito);
+}
+
+.negativa {
+  color: var(--error);
+}
+
+.detalle {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--texto-secundario);
+}
