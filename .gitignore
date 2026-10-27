@@ -1,0 +1,20 @@
+# Dependencias (se vuelven a instalar con npm install)
+node_modules/
+
+# Secretos y configuración local: NUNCA se suben a GitHub
+.env
+.env.*
+!.env.example
+
+# Archivos generados al compilar
+.next/
+dist/
+build/
+
+# Copias de seguridad de la base de datos (contienen datos reales)
+database/backups/*
+!database/backups/.gitkeep
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
