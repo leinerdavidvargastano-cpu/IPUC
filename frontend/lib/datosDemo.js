@@ -62,3 +62,19 @@ export const asistenciaAnualDemo = [
 
 // Total de los mismos meses del año anterior (FICTICIO), para comparar.
 export const anioAnteriorDemo = { total: 23890 };
+
+
+
+
+// Tipos de culto de DEMOSTRACIÓN. Más adelante saldrán de la tabla
+// "tipos_culto" de la base de datos, para poder configurarlos sin tocar el código.
+// Fíjate que el domingo tiene dos tipos distintos: mañana y tarde.
+export const tiposCultoDemo = [
+  { id: "dom-manana", nombre: "Culto dominical (mañana)" },
+  { id: "dom-tarde", nombre: "Culto dominical (tarde)" },
+  { id: "martes", nombre: "Culto de martes" },
+  { id: "miercoles", nombre: "Culto de barrios (miércoles)" },
+  { id: "jueves", nombre: "Culto de damas y caballeros" },
+  { id: "viernes", nombre: "Culto de barrios (viernes)" },
+  { id: "sabado", nombre: "Culto de jóvenes" },
+];

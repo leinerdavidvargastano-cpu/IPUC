@@ -1,0 +1,213 @@
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 900px;
+}
+
+/* ---------- Avisos y mensajes ---------- */
+.aviso,
+.mensajeExito,
+.mensajeError {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: var(--radio);
+  font-size: 0.9rem;
+}
+
+.aviso {
+  background: var(--azul-claro);
+  color: var(--azul-oscuro);
+}
+
+.mensajeExito {
+  background: #dcfce7;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.mensajeError {
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+/* ---------- Secciones ---------- */
+.seccion {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 24px;
+}
+
+.seccionTitulo {
+  margin: 0 0 4px;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.seccionDescripcion {
+  margin: 0 0 16px;
+  font-size: 0.9rem;
+  color: var(--texto-secundario);
+}
+
+/* Dos columnas en pantalla grande, una en celular */
+.cuadricula {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* El campo ocupa todo el ancho de la fila */
+.completo {
+  grid-column: 1 / -1;
+}
+
+.etiqueta {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.obligatorio {
+  color: var(--error);
+}
+
+.opcional {
+  font-weight: 400;
+  color: var(--texto-secundario);
+}
+
+.entrada {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: var(--superficie);
+  color: var(--texto);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.entrada:focus {
+  outline: none;
+  border-color: var(--azul-secundario);
+  box-shadow: 0 0 0 3px var(--azul-claro);
+}
+
+textarea.entrada {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.entradaError {
+  border-color: var(--error);
+}
+
+.ayuda {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--texto-secundario);
+}
+
+.error {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--error);
+}
+
+/* ---------- Total de asistentes ---------- */
+.total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 20px;
+  padding: 16px 20px;
+  border-radius: var(--radio);
+  background: var(--azul-claro);
+  color: var(--azul-oscuro);
+}
+
+.totalTitulo {
+  margin: 0;
+  font-weight: 700;
+}
+
+.totalTexto {
+  margin: 0;
+  font-size: 0.82rem;
+}
+
+.totalNumero {
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--azul-principal);
+}
+
+/* ---------- Botones ---------- */
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.botonPrimario,
+.botonSecundario {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.05s;
+}
+
+.botonPrimario {
+  border: none;
+  background: var(--azul-principal);
+  color: #ffffff;
+}
+
+.botonPrimario:hover {
+  background: #1d4ed8;
+}
+
+.botonSecundario {
+  border: 1px solid var(--borde);
+  background: var(--superficie);
+  color: var(--texto);
+}
+
+.botonSecundario:hover {
+  background: var(--fondo);
+}
+
+/* Efecto de "presionado" */
+.botonPrimario:active,
+.botonSecundario:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 700px) {
+  .cuadricula {
+    grid-template-columns: 1fr;
+  }
+
+  .seccion {
+    padding: 16px;
+  }
+}
