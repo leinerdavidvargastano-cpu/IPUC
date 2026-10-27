@@ -1,0 +1,115 @@
+.nota {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 0 24px;
+  padding: 12px 16px;
+  border-radius: var(--radio);
+  background: var(--azul-claro);
+  color: var(--azul-oscuro);
+  font-size: 0.9rem;
+}
+
+/* Preguntas a la izquierda y contacto a la derecha */
+.diseno {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ---------- Preguntas desplegables ---------- */
+.pregunta {
+  margin-bottom: 12px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+}
+
+.resumen {
+  padding: 16px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: var(--radio);
+}
+
+.resumen:hover {
+  background: var(--fondo);
+}
+
+.respuesta {
+  padding: 0 20px 16px;
+  color: var(--texto);
+}
+
+.respuesta p {
+  margin: 12px 0 0;
+}
+
+.lista {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.lista li {
+  margin-bottom: 6px;
+}
+
+/* ---------- Tarjeta de contacto ---------- */
+.contacto {
+  padding: 24px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+}
+
+.contactoTitulo {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.contactoTexto {
+  margin: 0 0 16px;
+  font-size: 0.9rem;
+  color: var(--texto-secundario);
+}
+
+.datosContacto {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.datosContacto li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  word-break: break-word; /* evita que un correo largo se salga de la tarjeta */
+}
+
+.datosContacto svg {
+  flex-shrink: 0;
+  color: var(--azul-principal);
+}
+
+.datosContacto a {
+  color: var(--azul-principal);
+  font-weight: 500;
+}
+
+.datosContacto a:hover {
+  text-decoration: underline;
+}
+
+/* En tabletas y celulares, el contacto pasa debajo de las preguntas */
+@media (max-width: 900px) {
+  .diseno {
+    grid-template-columns: 1fr;
+  }
+}
