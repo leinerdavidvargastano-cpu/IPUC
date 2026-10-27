@@ -1,0 +1,19 @@
+.globo {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  box-shadow: var(--sombra);
+  padding: 8px 12px;
+}
+
+.titulo {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--texto-secundario);
+}
+
+.valor {
+  margin: 0;
+  font-weight: 700;
+  color: var(--azul-principal);
+}

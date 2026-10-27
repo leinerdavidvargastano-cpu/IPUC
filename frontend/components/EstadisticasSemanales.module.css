@@ -75,3 +75,38 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Fila de selectores (mes y año) */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.etiquetaFiltro {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--texto-secundario);
+}
+
+.selector {
+  min-width: 140px;
+  padding: 8px 12px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: var(--superficie);
+  color: var(--texto);
+  cursor: pointer;
+}
+
+/* Nota pequeña bajo una gráfica */
+.nota {
+  margin: 12px 0 0;
+  font-size: 0.82rem;
+  color: var(--texto-secundario);
+}

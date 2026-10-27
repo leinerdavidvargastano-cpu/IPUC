@@ -14,6 +14,10 @@ import TarjetaEstadistica from "@/components/TarjetaEstadistica";
 import { resumenDemo } from "@/lib/datosDemo";
 import styles from "./inicio.module.css";
 import EstadisticasSemanales from "@/components/EstadisticasSemanales";
+import EstadisticasMensuales from "@/components/EstadisticasMensuales";
+import EstadisticasAnuales from "@/components/EstadisticasAnuales";
+
+
 
 export default function InicioPage() {
   const r = resumenDemo; // atajo para escribir menos
@@ -99,6 +103,8 @@ export default function InicioPage() {
       </section>
             
       <EstadisticasSemanales />
+      <EstadisticasMensuales />
+      <EstadisticasAnuales />
     </>
   );
 }
