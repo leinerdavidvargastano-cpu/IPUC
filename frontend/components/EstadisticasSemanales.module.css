@@ -1,0 +1,77 @@
+.seccion {
+  margin-top: 40px;
+}
+
+.titulo {
+  margin: 0 0 4px;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.subtitulo {
+  margin: 0 0 20px;
+  color: var(--texto-secundario);
+}
+
+/* Las 4 tarjetas de resumen */
+.resumen {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+/* Las dos gráficas, lado a lado en pantalla grande y apiladas en pequeñas */
+.graficas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 16px;
+}
+
+.panel {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 20px;
+  min-width: 0; /* permite que la gráfica se encoja dentro de la cuadrícula */
+}
+
+.panelTitulo {
+  margin: 0 0 16px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Altura fija: el ResponsiveContainer necesita saber cuánto mide su contenedor */
+.area {
+  width: 100%;
+  height: 300px;
+}
+
+/* Globo de información al pasar el mouse */
+.globo {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  box-shadow: var(--sombra);
+  padding: 8px 12px;
+}
+
+.globoTitulo {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--texto-secundario);
+}
+
+.globoValor {
+  margin: 0;
+  font-weight: 700;
+  color: var(--azul-principal);
+}
+
+@media (max-width: 900px) {
+  .graficas {
+    grid-template-columns: 1fr;
+  }
+}

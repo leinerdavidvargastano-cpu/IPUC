@@ -13,6 +13,7 @@ import EncabezadoPagina from "@/components/EncabezadoPagina";
 import TarjetaEstadistica from "@/components/TarjetaEstadistica";
 import { resumenDemo } from "@/lib/datosDemo";
 import styles from "./inicio.module.css";
+import EstadisticasSemanales from "@/components/EstadisticasSemanales";
 
 export default function InicioPage() {
   const r = resumenDemo; // atajo para escribir menos
@@ -96,6 +97,8 @@ export default function InicioPage() {
           <TarjetaEstadistica key={t.titulo} {...t} />
         ))}
       </section>
+            
+      <EstadisticasSemanales />
     </>
   );
 }
