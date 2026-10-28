@@ -211,3 +211,14 @@ textarea.entrada {
     padding: 16px;
   }
 }
+
+
+/* Boton mientras se esta guardando */
+.botonPrimario:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.botonPrimario:disabled:hover {
+  background: var(--azul-principal);
+}

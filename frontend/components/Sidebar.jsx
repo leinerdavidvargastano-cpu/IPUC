@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, ClipboardList, Table, LifeBuoy } from "lucide-react";
+import EstadoServidor from "./EstadoServidor"; // NUEVO
 import styles from "./Sidebar.module.css";
 
-// Lista de secciones del menú. Si algún día agregamos otra sección,
-// solo se añade un elemento aquí.
+// Lista de secciones del menu. Si algun dia agregamos otra seccion,
+// solo se anade un elemento aqui.
 const enlaces = [
   { href: "/inicio", texto: "Inicio", Icono: LayoutDashboard },
   { href: "/llenar-datos", texto: "Llenar datos", Icono: ClipboardList },
@@ -16,12 +17,12 @@ const enlaces = [
 
 export default function Sidebar({ abierto, onCerrar }) {
   // usePathname devuelve la URL actual (por ejemplo "/inicio").
-  // La usamos para resaltar el enlace de la sección donde estamos.
+  // La usamos para resaltar el enlace de la seccion donde estamos.
   const rutaActual = usePathname();
 
   return (
     <>
-      {/* Fondo oscuro detrás del menú en celulares; al tocarlo, se cierra */}
+      {/* Fondo oscuro detras del menu en celulares; al tocarlo, se cierra */}
       <div
         className={`${styles.fondo} ${abierto ? styles.fondoVisible : ""}`}
         onClick={onCerrar}
@@ -42,9 +43,9 @@ export default function Sidebar({ abierto, onCerrar }) {
             const activo = rutaActual === href;
             return (
               <Link
-                key={href} // React necesita una "key" única en cada elemento de una lista
+                key={href} // React necesita una "key" unica en cada elemento de una lista
                 href={href}
-                onClick={onCerrar} // en celular, cierra el menú al elegir una sección
+                onClick={onCerrar} // en celular, cierra el menu al elegir una seccion
                 aria-current={activo ? "page" : undefined}
                 className={`${styles.enlace} ${activo ? styles.activo : ""}`}
               >
@@ -55,6 +56,7 @@ export default function Sidebar({ abierto, onCerrar }) {
           })}
         </nav>
 
+        <EstadoServidor /> {/* NUEVO */}
         <p className={styles.pie}>Versión de demostración</p>
       </aside>
     </>
