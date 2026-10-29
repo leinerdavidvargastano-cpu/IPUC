@@ -88,3 +88,59 @@ export async function listarCultos(filtros) {
 
   return resultado.rows;
 }
+
+
+
+// Elimina un culto de forma "logica": no se borra la fila, solo se marca.
+// Devuelve true si lo elimino, o false si no existia (o ya estaba eliminado).
+//
+// Aqui usamos una TRANSACCION porque son tres operaciones que deben
+// ocurrir juntas o no ocurrir: leer el registro, marcarlo y anotar la
+// auditoria. Si una falla, se deshace todo (ROLLBACK).
+export async function eliminarCulto(id, usuarioId) {
+  // pool.connect() separa UNA conexion del grupo para usarla en exclusiva.
+  // Es necesario: BEGIN y COMMIT deben ejecutarse en la misma conexion.
+  const cliente = await pool.connect();
+
+  try {
+    await cliente.query("BEGIN");
+
+    // Lee el registro vigente. FOR UPDATE lo bloquea hasta terminar, para que
+    // dos personas no lo eliminen a la vez.
+    const existente = await cliente.query(
+      `SELECT * FROM cultos WHERE id = $1 AND eliminado_en IS NULL FOR UPDATE`,
+      [id]
+    );
+
+    if (existente.rowCount === 0) {
+      await cliente.query("ROLLBACK");
+      return false;
+    }
+
+    await cliente.query(
+      `UPDATE cultos
+          SET eliminado_en = NOW(),
+              eliminado_por = $2,
+              modificado_en = NOW(),
+              modificado_por = $2
+        WHERE id = $1`,
+      [id, usuarioId]
+    );
+
+    // Historial: guardamos como estaba el registro antes de eliminarlo
+    await cliente.query(
+      `INSERT INTO auditoria (usuario_id, accion, entidad, entidad_id, datos_antes)
+       VALUES ($1, 'eliminar', 'culto', $2, $3)`,
+      [usuarioId, id, JSON.stringify(existente.rows[0])]
+    );
+
+    await cliente.query("COMMIT");
+    return true;
+  } catch (error) {
+    await cliente.query("ROLLBACK"); // algo fallo: se deshace todo
+    throw error;
+  } finally {
+    // SIEMPRE devolvemos la conexion al grupo, haya salido bien o mal
+    cliente.release();
+  }
+}

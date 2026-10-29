@@ -260,3 +260,17 @@
   border: 1px solid #fecaca;
   border-style: solid;
 }
+
+
+/* Aviso de error sobre la tabla (se aplica junto a .mensaje) */
+.mensajeError {
+  background: #fee2e2;
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+.cancelar:disabled,
+.eliminar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

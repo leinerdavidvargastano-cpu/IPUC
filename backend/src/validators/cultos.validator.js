@@ -95,3 +95,13 @@ export const esquemaListarCultos = z.object({
       .default("fecha-desc")
   ),
 });
+
+
+
+// Valida el identificador que llega en la direccion (/api/cultos/12).
+// El maximo es el numero mas grande que cabe en una columna INTEGER.
+export const esquemaId = z.coerce
+  .number({ error: "El identificador no es válido." })
+  .int("El identificador no es válido.")
+  .positive("El identificador no es válido.")
+  .max(2147483647, "El identificador no es válido.");

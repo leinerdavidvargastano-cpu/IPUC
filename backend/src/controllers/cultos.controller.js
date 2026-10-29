@@ -1,8 +1,13 @@
 import {
   esquemaCrearCulto,
   esquemaListarCultos,
+  esquemaId,
 } from "../validators/cultos.validator.js";
-import { insertarCulto, listarCultos } from "../repositories/cultos.repository.js";
+import {
+  insertarCulto,
+  listarCultos,
+  eliminarCulto,
+} from "../repositories/cultos.repository.js";
 
 // GET /api/cultos
 export async function obtenerCultos(req, res) {
@@ -61,4 +66,23 @@ export async function crearCulto(req, res) {
 
     throw error; // cualquier otro error: lo atiende el manejador central
   }
+}
+
+// DELETE /api/cultos/:id
+export async function borrarCulto(req, res) {
+  // req.params.id es lo que va en la direccion: /api/cultos/12 -> "12"
+  const validacion = esquemaId.safeParse(req.params.id);
+
+  if (!validacion.success) {
+    return res.status(400).json({ mensaje: "El identificador no es válido." });
+  }
+
+  const eliminado = await eliminarCulto(validacion.data, req.usuario.id);
+
+  if (!eliminado) {
+    return res.status(404).json({ mensaje: "El registro no existe o ya fue eliminado." });
+  }
+
+  // 204 = "hecho, y no hay nada que devolver"
+  res.status(204).end();
 }

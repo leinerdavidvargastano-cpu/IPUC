@@ -1,7 +1,7 @@
 "use client"; // usa estado y eventos del navegador
 
 import { useEffect, useState } from "react";
-import { Eye, Pencil, Trash2, CircleCheck } from "lucide-react";
+import { Eye, Pencil, Trash2, CircleCheck, CircleAlert } from "lucide-react";
 import Modal from "./Modal";
 import { formatearFecha, formatearPesos } from "@/lib/formato";
 import styles from "./TablaRegistros.module.css";
@@ -42,14 +42,21 @@ export default function TablaRegistros() {
   const [tipos, setTipos] = useState([]); // para el filtro "Tipo de culto"
   const [detalle, setDetalle] = useState(null); // registro que se esta viendo, o null
   const [porEliminar, setPorEliminar] = useState(null); // registro pendiente de confirmar
-  const [aviso, setAviso] = useState("");
+  const [eliminando, setEliminando] = useState(false);
+  // Mensaje sobre la tabla: { texto, error } o null
+  const [aviso, setAviso] = useState(null);
+
+  // "version" sube de a uno cada vez que queremos volver a pedir la lista
+  // al servidor sin que haya cambiado ningun filtro (por ejemplo, tras eliminar).
+  const [version, setVersion] = useState(0);
 
   // Guardamos el resultado JUNTO con la consulta que lo produjo ("clave").
   // Asi sabemos si lo que mostramos corresponde a los filtros actuales
   // o si todavia estamos esperando la respuesta de una consulta nueva.
   const [resultado, setResultado] = useState({ clave: null, datos: [], error: false });
 
-  const clave = construirConsulta(filtros);
+  const consulta = construirConsulta(filtros);
+  const clave = `${consulta}|${version}`;
   const cargando = resultado.clave !== clave;
 
   // Lista de tipos de culto para el filtro (una sola vez)
@@ -69,13 +76,13 @@ export default function TablaRegistros() {
   }, []);
 
   // Pide los cultos al servidor. Se ejecuta al abrir la pagina y cada vez
-  // que cambia "clave", es decir, cada vez que cambia un filtro.
+  // que cambia "clave": un filtro nuevo o una recarga pedida con "version".
   useEffect(() => {
     // "activo" descarta respuestas viejas: si cambias un filtro dos veces
     // rapido, solo cuenta la respuesta de la ultima consulta.
     let activo = true;
 
-    fetch(`/api/cultos?${clave}`)
+    fetch(`/api/cultos?${consulta}`)
       .then((respuesta) => {
         if (!respuesta.ok) throw new Error("Respuesta no valida");
         return respuesta.json();
@@ -90,7 +97,7 @@ export default function TablaRegistros() {
     return () => {
       activo = false;
     };
-  }, [clave]);
+  }, [clave, consulta]);
 
   function cambiarFiltro(evento) {
     const { name, value } = evento.target;
@@ -101,13 +108,42 @@ export default function TablaRegistros() {
   const hayFiltros = filtros.fecha || filtros.tipo || filtros.mes || filtros.anio;
 
   function pedirEdicion() {
-    setAviso("La edición se conectará en uno de los próximos pasos.");
+    setAviso({ texto: "La edición se conectará en el próximo paso.", error: false });
   }
 
-  function confirmarEliminar() {
-    // TODO: conectar con la API (se hace en un paso posterior)
-    setAviso("La eliminación todavía no está conectada: el registro no se borró.");
-    setPorEliminar(null);
+  // Elimina el registro llamando a la API (DELETE /api/cultos/:id)
+  async function confirmarEliminar() {
+    const registro = porEliminar;
+    setEliminando(true);
+
+    try {
+      const respuesta = await fetch(`/api/cultos/${registro.id}`, { method: "DELETE" });
+
+      if (respuesta.status === 204) {
+        setAviso({
+          texto: `Registro del ${formatearFecha(registro.fecha)} eliminado.`,
+          error: false,
+        });
+      } else if (respuesta.status === 404) {
+        setAviso({
+          texto: "Ese registro ya no existe (quizás ya fue eliminado).",
+          error: true,
+        });
+      } else {
+        setAviso({ texto: "No se pudo eliminar el registro. Inténtalo de nuevo.", error: true });
+      }
+
+      // En todos los casos volvemos a pedir la lista, para que muestre lo que hay de verdad
+      setVersion((anterior) => anterior + 1);
+    } catch {
+      setAviso({
+        texto: "No se pudo conectar con el servidor. El registro no se eliminó.",
+        error: true,
+      });
+    } finally {
+      setEliminando(false);
+      setPorEliminar(null);
+    }
   }
 
   // Datos que se muestran en la ventana de detalle
@@ -231,9 +267,16 @@ export default function TablaRegistros() {
   return (
     <>
       {aviso && (
-        <p className={styles.mensaje} role="status">
-          <CircleCheck size={18} aria-hidden="true" />
-          <span>{aviso}</span>
+        <p
+          className={`${styles.mensaje} ${aviso.error ? styles.mensajeError : ""}`}
+          role={aviso.error ? "alert" : "status"}
+        >
+          {aviso.error ? (
+            <CircleAlert size={18} aria-hidden="true" />
+          ) : (
+            <CircleCheck size={18} aria-hidden="true" />
+          )}
+          <span>{aviso.texto}</span>
         </p>
       )}
 
@@ -340,11 +383,21 @@ export default function TablaRegistros() {
             asistentes).
           </p>
           <div className={styles.botonesConfirmar}>
-            <button type="button" className={styles.cancelar} onClick={() => setPorEliminar(null)}>
+            <button
+              type="button"
+              className={styles.cancelar}
+              onClick={() => setPorEliminar(null)}
+              disabled={eliminando}
+            >
               Cancelar
             </button>
-            <button type="button" className={styles.eliminar} onClick={confirmarEliminar}>
-              Sí, eliminar
+            <button
+              type="button"
+              className={styles.eliminar}
+              onClick={confirmarEliminar}
+              disabled={eliminando}
+            >
+              {eliminando ? "Eliminando..." : "Sí, eliminar"}
             </button>
           </div>
         </Modal>
