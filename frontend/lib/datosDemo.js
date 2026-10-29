@@ -66,37 +66,7 @@ export const anioAnteriorDemo = { total: 23890 };
 
 
 
-// Tipos de culto de DEMOSTRACIÓN. Más adelante saldrán de la tabla
-// "tipos_culto" de la base de datos, para poder configurarlos sin tocar el código.
-// Fíjate que el domingo tiene dos tipos distintos: mañana y tarde.
-export const tiposCultoDemo = [
-  { id: "dom-manana", nombre: "Culto dominical (mañana)" },
-  { id: "dom-tarde", nombre: "Culto dominical (tarde)" },
-  { id: "martes", nombre: "Culto de martes" },
-  { id: "miercoles", nombre: "Culto de barrios (miércoles)" },
-  { id: "jueves", nombre: "Culto de damas y caballeros" },
-  { id: "viernes", nombre: "Culto de barrios (viernes)" },
-  { id: "sabado", nombre: "Culto de jóvenes" },
-];
 
 
 
 
-// REGISTROS DE DEMOSTRACIÓN (FICTICIOS) para la tabla "Ver datos".
-// Fíjate en dos cosas:
-// 1) No guardamos el "total": se calcula sumando las cuatro categorías.
-// 2) ofrenda: null significa "no se registró", que es distinto de 0.
-export const registrosDemo = [
-  { id: 1, fecha: "2026-10-25", tipoCultoId: "dom-manana", hermanos: 118, visitas: 12, ninos: 21, adolescentes: 11, ofrenda: 1250000, dirigio: "Persona demo A", predico: "Persona demo B", lema: "Lema de demostración", tema: "Tema de demostración", observaciones: "Registro ficticio de ejemplo.", registradoPor: "Secretario Demo" },
-  { id: 2, fecha: "2026-10-25", tipoCultoId: "dom-tarde", hermanos: 96, visitas: 8, ninos: 14, adolescentes: 9, ofrenda: 780000, dirigio: "Persona demo C", predico: "Persona demo B", lema: "", tema: "", observaciones: "", registradoPor: "Secretario Demo" },
-  { id: 3, fecha: "2026-10-24", tipoCultoId: "sabado", hermanos: 61, visitas: 9, ninos: 6, adolescentes: 15, ofrenda: null, dirigio: "", predico: "", lema: "", tema: "", observaciones: "", registradoPor: "Secretario Demo" },
-  { id: 4, fecha: "2026-10-23", tipoCultoId: "viernes", hermanos: 44, visitas: 5, ninos: 3, adolescentes: 4, ofrenda: 210000, dirigio: "", predico: "", lema: "", tema: "", observaciones: "", registradoPor: "Secretario Demo" },
-  { id: 5, fecha: "2026-10-22", tipoCultoId: "jueves", hermanos: 58, visitas: 6, ninos: 4, adolescentes: 3, ofrenda: 340000, dirigio: "", predico: "", lema: "", tema: "", observaciones: "", registradoPor: "Secretario Demo" },
-  { id: 6, fecha: "2026-10-21", tipoCultoId: "miercoles", hermanos: 40, visitas: 7, ninos: 5, adolescentes: 2, ofrenda: null, dirigio: "", predico: "", lema: "", tema: "", observaciones: "", registradoPor: "Secretario Demo" },
-  { id: 7, fecha: "2026-10-20", tipoCultoId: "martes", hermanos: 52, visitas: 4, ninos: 6, adolescentes: 3, ofrenda: 190000, dirigio: "", predico: "", lema: "", tema: "", observaciones: "", registradoPor: "Secretario Demo" },
-  { id: 8, fecha: "2026-10-18", tipoCultoId: "dom-manana", hermanos: 121, visitas: 15, ninos: 19, adolescentes: 10, ofrenda: 1310000, dirigio: "", predico: "", lema: "", tema: "", observaciones: "", registradoPor: "Secretario Demo" },
-  { id: 9, fecha: "2026-10-18", tipoCultoId: "dom-tarde", hermanos: 99, visitas: 6, ninos: 13, adolescentes: 8, ofrenda: 820000, dirigio: "", predico: "", lema: "", tema: "", observaciones: "", registradoPor: "Secretario Demo" },
-  { id: 10, fecha: "2026-09-27", tipoCultoId: "dom-manana", hermanos: 112, visitas: 10, ninos: 18, adolescentes: 9, ofrenda: 1100000, dirigio: "", predico: "", lema: "", tema: "", observaciones: "", registradoPor: "Secretario Demo" },
-  { id: 11, fecha: "2026-09-26", tipoCultoId: "sabado", hermanos: 57, visitas: 11, ninos: 5, adolescentes: 12, ofrenda: null, dirigio: "", predico: "", lema: "", tema: "", observaciones: "", registradoPor: "Secretario Demo" },
-  { id: 12, fecha: "2025-12-21", tipoCultoId: "dom-manana", hermanos: 130, visitas: 22, ninos: 25, adolescentes: 14, ofrenda: 1480000, dirigio: "", predico: "", lema: "", tema: "", observaciones: "", registradoPor: "Secretario Demo" },
-];

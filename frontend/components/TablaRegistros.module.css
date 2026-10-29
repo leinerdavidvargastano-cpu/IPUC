@@ -253,3 +253,10 @@
     flex: 1 1 100%;
   }
 }
+
+/* Cuadro de error al cargar los registros */
+.errorCarga {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-style: solid;
+}
