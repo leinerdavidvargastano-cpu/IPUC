@@ -78,3 +78,24 @@
     font-size: 0.85rem;
   }
 }
+
+
+/* Boton de cerrar sesion */
+.salir {
+  display: grid;
+  place-items: center;
+  padding: 8px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: var(--superficie);
+  color: var(--texto-secundario);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.salir:hover {
+  background: #fee2e2;
+  color: var(--error);
+}
+
+
