@@ -55,3 +55,43 @@ export const esquemaCrearCulto = z.object({
   tema: textoOpcional("El tema", 150),
   observaciones: textoOpcional("Las observaciones", 500),
 });
+
+
+
+// Los filtros llegan en la direccion (?mes=10) y siempre son texto.
+// Esta funcion hace que un filtro vacio (?mes=) se trate como "no enviado".
+const filtro = (esquema) =>
+  z.preprocess((valor) => (valor === "" ? undefined : valor), esquema.optional());
+
+export const esquemaListarCultos = z.object({
+  fecha: filtro(
+    z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "La fecha debe tener el formato AAAA-MM-DD.")
+  ),
+  // z.coerce.number convierte el texto "10" en el numero 10
+  tipoCultoId: filtro(
+    z.coerce.number({ error: "El tipo de culto no es válido." }).int().positive()
+  ),
+  mes: filtro(
+    z.coerce
+      .number({ error: "El mes no es válido." })
+      .int()
+      .min(1, "El mes debe estar entre 1 y 12.")
+      .max(12, "El mes debe estar entre 1 y 12.")
+  ),
+  anio: filtro(
+    z.coerce
+      .number({ error: "El año no es válido." })
+      .int()
+      .min(2000, "El año no es válido.")
+      .max(2100, "El año no es válido.")
+  ),
+  // Si no se envia "orden", se usa fecha-desc (las mas recientes primero)
+  orden: z.preprocess(
+    (valor) => (valor === "" ? undefined : valor),
+    z
+      .enum(["fecha-desc", "fecha-asc", "total-desc", "total-asc"], {
+        error: "El orden no es válido.",
+      })
+      .default("fecha-desc")
+  ),
+});

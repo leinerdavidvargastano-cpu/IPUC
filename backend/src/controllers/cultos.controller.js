@@ -1,5 +1,27 @@
-import { esquemaCrearCulto } from "../validators/cultos.validator.js";
-import { insertarCulto } from "../repositories/cultos.repository.js";
+import {
+  esquemaCrearCulto,
+  esquemaListarCultos,
+} from "../validators/cultos.validator.js";
+import { insertarCulto, listarCultos } from "../repositories/cultos.repository.js";
+
+// GET /api/cultos
+export async function obtenerCultos(req, res) {
+  // Los filtros llegan en req.query (lo que va despues del "?" en la direccion)
+  const validacion = esquemaListarCultos.safeParse(req.query);
+
+  if (!validacion.success) {
+    return res.status(400).json({
+      mensaje: "Filtros inválidos",
+      errores: validacion.error.issues.map((problema) => ({
+        campo: problema.path.join("."),
+        mensaje: problema.message,
+      })),
+    });
+  }
+
+  const cultos = await listarCultos(validacion.data);
+  res.json(cultos);
+}
 
 // POST /api/cultos
 export async function crearCulto(req, res) {
