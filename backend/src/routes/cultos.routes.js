@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { usuarioActual } from "../middlewares/usuarioActual.js";
+import { autenticar } from "../middlewares/autenticar.js";
+import { exigirRol } from "../middlewares/exigirRol.js";
 import {
   obtenerCultos,
   obtenerCulto,
@@ -10,16 +11,19 @@ import {
 
 const router = Router();
 
-// Todas las rutas exigen usuario (por ahora el provisional de desarrollo).
+// TODAS las rutas de este archivo exigen una sesion iniciada.
+// router.use(...) lo aplica a todo lo que se declare debajo.
+router.use(autenticar);
+
 // GET    /api/cultos      -> lista con filtros
 // GET    /api/cultos/:id  -> un registro
 // POST   /api/cultos      -> crea un culto
 // PUT    /api/cultos/:id  -> reemplaza los datos de un culto
-// DELETE /api/cultos/:id  -> elimina (borrado logico)
-router.get("/", usuarioActual, obtenerCultos);
-router.get("/:id", usuarioActual, obtenerCulto);
-router.post("/", usuarioActual, crearCulto);
-router.put("/:id", usuarioActual, editarCulto);
-router.delete("/:id", usuarioActual, borrarCulto);
+// DELETE /api/cultos/:id  -> elimina (borrado logico), SOLO administradores
+router.get("/", obtenerCultos);
+router.get("/:id", obtenerCulto);
+router.post("/", crearCulto);
+router.put("/:id", editarCulto);
+router.delete("/:id", exigirRol("admin"), borrarCulto);
 
 export default router;

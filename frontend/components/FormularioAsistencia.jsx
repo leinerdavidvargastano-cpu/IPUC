@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CircleCheck, CircleAlert, Save, Eraser, Info, ArrowLeft } from "lucide-react";
 import styles from "./FormularioAsistencia.module.css";
+import { fetchApi } from "@/lib/api";
 
 // Los cuatro datos que se suman para obtener el total de asistentes
 const CAMPOS_NUMERICOS = [
@@ -172,7 +173,7 @@ export default function FormularioAsistencia({ culto }) {
     // "activo" evita actualizar el estado si el componente ya desaparecio
     let activo = true;
 
-    fetch("/api/tipos-culto")
+    fetchApi("/api/tipos-culto")
       .then((respuesta) => {
         if (!respuesta.ok) throw new Error("Respuesta no valida");
         return respuesta.json();
@@ -249,7 +250,7 @@ export default function FormularioAsistencia({ culto }) {
     // 2) Enviar al servidor: PUT para reemplazar un registro, POST para crear uno
     setGuardando(true);
     try {
-      const respuesta = await fetch(
+      const respuesta = await fetchApi(
         modoEdicion ? `/api/cultos/${culto.id}` : "/api/cultos",
         {
           method: modoEdicion ? "PUT" : "POST",

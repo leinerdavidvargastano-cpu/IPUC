@@ -6,6 +6,4 @@ export const entorno = {
   puerto: Number(process.env.PORT) || 4000,
   modo: process.env.NODE_ENV || "development",
   urlBaseDatos: process.env.DATABASE_URL,
-  // Solo desarrollo: usuario provisional hasta tener inicio de sesion
-  usuarioDesarrolloId: Number(process.env.USUARIO_DESARROLLO_ID) || null,
 };

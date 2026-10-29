@@ -6,6 +6,8 @@ import Modal from "./Modal";
 import { formatearFecha, formatearPesos } from "@/lib/formato";
 import styles from "./TablaRegistros.module.css";
 import Link from "next/link";
+import { fetchApi } from "@/lib/api";
+import { useSesion } from "./SesionProvider";
 
 
 const MESES = [
@@ -40,6 +42,7 @@ function construirConsulta(filtros) {
 }
 
 export default function TablaRegistros() {
+  const { usuario } = useSesion();
   const [filtros, setFiltros] = useState(FILTROS_INICIALES);
   const [tipos, setTipos] = useState([]); // para el filtro "Tipo de culto"
   const [detalle, setDetalle] = useState(null); // registro que se esta viendo, o null
@@ -65,7 +68,7 @@ export default function TablaRegistros() {
   useEffect(() => {
     let activo = true;
 
-    fetch("/api/tipos-culto")
+    fetchApi("/api/tipos-culto")
       .then((respuesta) => (respuesta.ok ? respuesta.json() : []))
       .then((datos) => {
         if (activo) setTipos(datos);
@@ -84,7 +87,7 @@ export default function TablaRegistros() {
     // rapido, solo cuenta la respuesta de la ultima consulta.
     let activo = true;
 
-    fetch(`/api/cultos?${consulta}`)
+    fetchApi(`/api/cultos?${consulta}`)
       .then((respuesta) => {
         if (!respuesta.ok) throw new Error("Respuesta no valida");
         return respuesta.json();
@@ -117,7 +120,7 @@ export default function TablaRegistros() {
     setEliminando(true);
 
     try {
-      const respuesta = await fetch(`/api/cultos/${registro.id}`, { method: "DELETE" });
+      const respuesta = await fetchApi(`/api/cultos/${registro.id}`, { method: "DELETE" });
 
       if (respuesta.status === 204) {
         setAviso({
@@ -245,16 +248,20 @@ export default function TablaRegistros() {
                         <Pencil size={18} />
                       </Link>
                       
+
+                      {usuario.rol === "admin" && (
+                        <button
+                          type="button"
+                          className={`${styles.accion} ${styles.peligro}`}
+                          onClick={() => setPorEliminar(r)}
+                          aria-label={`Eliminar: ${descripcion}`}
+                          title="Eliminar"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      )}
    
-                      <button
-                        type="button"
-                        className={`${styles.accion} ${styles.peligro}`}
-                        onClick={() => setPorEliminar(r)}
-                        aria-label={`Eliminar: ${descripcion}`}
-                        title="Eliminar"
-                      >
-                        <Trash2 size={18} />
-                      </button>
+                      
                     </div>
                   </td>
                 </tr>

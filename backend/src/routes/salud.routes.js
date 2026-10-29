@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { pool } from "../config/baseDatos.js";
+import { autenticar } from "../middlewares/autenticar.js";
+import { exigirRol } from "../middlewares/exigirRol.js";
 
 // Un Router agrupa las rutas de un mismo tema
 const router = Router();
@@ -16,7 +18,7 @@ router.get("/", (req, res) => {
 // GET /api/salud/db
 // Comprueba que el backend puede hablar con PostgreSQL.
 // "async/await" espera a que la base de datos responda sin congelar el servidor.
-router.get("/db", async (req, res) => {
+router.get("/db", autenticar, exigirRol("admin"), async (req, res) => {
   try {
     // SQL: pedimos la hora de la base de datos y su nombre
     const resultado = await pool.query(

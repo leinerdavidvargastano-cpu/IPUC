@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import FormularioAsistencia from "./FormularioAsistencia";
 import estilos from "./FormularioAsistencia.module.css"; // reutilizamos sus estilos
+import { fetchApi } from "@/lib/api";
+
 
 export default function EditarCulto({ id }) {
   // estado puede ser: "cargando", "listo", "noExiste" o "error"
@@ -13,7 +15,7 @@ export default function EditarCulto({ id }) {
   useEffect(() => {
     let activo = true;
 
-    fetch(`/api/cultos/${id}`)
+    fetchApi(`/api/cultos/${id}`)
       .then(async (respuesta) => {
         // 404 = no existe o fue eliminado; 400 = el id de la direccion no es valido
         if (respuesta.status === 404 || respuesta.status === 400) {
