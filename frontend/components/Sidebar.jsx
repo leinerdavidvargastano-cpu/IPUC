@@ -40,7 +40,7 @@ export default function Sidebar({ abierto, onCerrar }) {
         <nav className={styles.nav} aria-label="Navegación principal">
           {/* .map recorre la lista y crea un enlace por cada elemento */}
           {enlaces.map(({ href, texto, Icono }) => {
-            const activo = rutaActual === href;
+                        const activo = rutaActual === href || rutaActual.startsWith(`${href}/`);
             return (
               <Link
                 key={href} // React necesita una "key" unica en cada elemento de una lista

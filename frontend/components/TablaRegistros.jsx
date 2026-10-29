@@ -5,6 +5,8 @@ import { Eye, Pencil, Trash2, CircleCheck, CircleAlert } from "lucide-react";
 import Modal from "./Modal";
 import { formatearFecha, formatearPesos } from "@/lib/formato";
 import styles from "./TablaRegistros.module.css";
+import Link from "next/link";
+
 
 const MESES = [
   "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
@@ -107,10 +109,8 @@ export default function TablaRegistros() {
   const registros = resultado.datos;
   const hayFiltros = filtros.fecha || filtros.tipo || filtros.mes || filtros.anio;
 
-  function pedirEdicion() {
-    setAviso({ texto: "La edición se conectará en el próximo paso.", error: false });
-  }
-
+ 
+  
   // Elimina el registro llamando a la API (DELETE /api/cultos/:id)
   async function confirmarEliminar() {
     const registro = porEliminar;
@@ -235,15 +235,17 @@ export default function TablaRegistros() {
                       >
                         <Eye size={18} />
                       </button>
-                      <button
-                        type="button"
+
+                      <Link
+                        href={`/ver-datos/${r.id}/editar`}
                         className={styles.accion}
-                        onClick={pedirEdicion}
                         aria-label={`Editar: ${descripcion}`}
-                        title="Editar"
-                      >
+                        title="Editar">
+
                         <Pencil size={18} />
-                      </button>
+                      </Link>
+                      
+   
                       <button
                         type="button"
                         className={`${styles.accion} ${styles.peligro}`}

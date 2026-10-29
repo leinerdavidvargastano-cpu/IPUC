@@ -1,7 +1,8 @@
 "use client"; // usa useState y eventos del navegador
 
 import { useEffect, useState } from "react";
-import { CircleCheck, CircleAlert, Save, Eraser, Info } from "lucide-react";
+import Link from "next/link";
+import { CircleCheck, CircleAlert, Save, Eraser, Info, ArrowLeft } from "lucide-react";
 import styles from "./FormularioAsistencia.module.css";
 
 // Los cuatro datos que se suman para obtener el total de asistentes
@@ -32,6 +33,26 @@ const VALORES_INICIALES = {
 // Expresion regular: "solo digitos del 0 al 9, uno o mas".
 // Rechaza vacio, negativos (-3), decimales (1.5) y letras (abc).
 const ES_ENTERO = /^\d+$/;
+
+// Convierte un registro que viene de la API en los valores del formulario.
+// Los campos del formulario son siempre texto, y los datos que no se
+// registraron (null) pasan a ser texto vacio.
+function valoresDesdeCulto(culto) {
+  return {
+    fecha: culto.fecha,
+    tipoCultoId: String(culto.tipoCultoId),
+    hermanos: String(culto.hermanos),
+    visitas: String(culto.visitas),
+    ninos: String(culto.ninos),
+    adolescentes: String(culto.adolescentes),
+    ofrenda: culto.ofrendaCop === null ? "" : String(culto.ofrendaCop),
+    dirigio: culto.dirigio ?? "",
+    predico: culto.predico ?? "",
+    lema: culto.lema ?? "",
+    tema: culto.tema ?? "",
+    observaciones: culto.observaciones ?? "",
+  };
+}
 
 // Fecha de hoy como "AAAA-MM-DD" usando la hora local del computador.
 // (toISOString usaria la hora UTC y en la noche daria el dia siguiente.)
@@ -123,8 +144,17 @@ function Campo({ id, etiqueta, obligatorio, error, ayuda, completo, children }) 
   );
 }
 
-export default function FormularioAsistencia() {
-  const [valores, setValores] = useState(VALORES_INICIALES);
+// "culto" es opcional: si llega un registro, el formulario entra en MODO EDICION;
+// si no llega, funciona como siempre para registrar un culto nuevo.
+export default function FormularioAsistencia({ culto }) {
+  const modoEdicion = Boolean(culto);
+
+  // "valoresBase" son los valores a los que vuelve el boton de limpiar o deshacer:
+  // vacio al crear, o los datos guardados del registro al editar.
+  const [valoresBase, setValoresBase] = useState(() =>
+    culto ? valoresDesdeCulto(culto) : VALORES_INICIALES
+  );
+  const [valores, setValores] = useState(valoresBase);
   const [errores, setErrores] = useState({});
   const [mensajeExito, setMensajeExito] = useState("");
   // Error general que llega del servidor (duplicado, servidor apagado...)
@@ -216,22 +246,31 @@ export default function FormularioAsistencia() {
     setErrores(nuevosErrores);
     if (Object.keys(nuevosErrores).length > 0) return;
 
-    // 2) Enviar al servidor
+    // 2) Enviar al servidor: PUT para reemplazar un registro, POST para crear uno
     setGuardando(true);
     try {
-      const respuesta = await fetch("/api/cultos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(armarCuerpo(valores)),
-      });
+      const respuesta = await fetch(
+        modoEdicion ? `/api/cultos/${culto.id}` : "/api/cultos",
+        {
+          method: modoEdicion ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(armarCuerpo(valores)),
+        }
+      );
       const datos = await respuesta.json();
 
-      // 201 = creado: todo salio bien
-      if (respuesta.status === 201) {
-        setMensajeExito(
-          `Culto guardado correctamente: ${datos.totalAsistentes} asistentes.`
-        );
-        setValores(VALORES_INICIALES);
+      // 201 = creado, 200 = modificado: todo salio bien
+      if (respuesta.status === 201 || respuesta.status === 200) {
+        if (modoEdicion) {
+          setMensajeExito("Cambios guardados correctamente.");
+          // Lo que acabamos de guardar pasa a ser el nuevo "punto de partida"
+          setValoresBase(valores);
+        } else {
+          setMensajeExito(
+            `Culto guardado correctamente: ${datos.totalAsistentes} asistentes.`
+          );
+          setValores(VALORES_INICIALES);
+        }
         return;
       }
 
@@ -247,7 +286,7 @@ export default function FormularioAsistencia() {
         return;
       }
 
-      // Cualquier otro caso (por ejemplo 409 = duplicado): mensaje general
+      // Cualquier otro caso (409 duplicado, 404 ya no existe...): mensaje general
       setErrorServidor(datos.mensaje || "No se pudo guardar el registro.");
     } catch {
       // fetch falla si el servidor esta apagado o no responde
@@ -260,8 +299,9 @@ export default function FormularioAsistencia() {
     }
   }
 
+  // Al crear: deja todo vacio. Al editar: vuelve a los ultimos datos guardados.
   function limpiar() {
-    setValores(VALORES_INICIALES);
+    setValores(valoresBase);
     setErrores({});
     setMensajeExito("");
     setErrorServidor("");
@@ -276,6 +316,7 @@ export default function FormularioAsistencia() {
       <p className={styles.aviso}>
         <Info size={18} aria-hidden="true" />
         <span>
+          {modoEdicion ? "Estás editando un registro existente. " : ""}
           Los campos con <strong>*</strong> son obligatorios.
         </span>
       </p>
@@ -411,12 +452,22 @@ export default function FormularioAsistencia() {
       <div className={styles.acciones}>
         <button type="submit" className={styles.botonPrimario} disabled={guardando}>
           <Save size={18} aria-hidden="true" />
-          {guardando ? "Guardando..." : "Guardar registro"}
+          {guardando
+            ? "Guardando..."
+            : modoEdicion
+              ? "Guardar cambios"
+              : "Guardar registro"}
         </button>
         <button type="button" className={styles.botonSecundario} onClick={limpiar}>
           <Eraser size={18} aria-hidden="true" />
-          Limpiar formulario
+          {modoEdicion ? "Deshacer cambios" : "Limpiar formulario"}
         </button>
+        {modoEdicion && (
+          <Link href="/ver-datos" className={styles.botonSecundario}>
+            <ArrowLeft size={18} aria-hidden="true" />
+            Volver a Ver datos
+          </Link>
+        )}
       </div>
     </form>
   );
