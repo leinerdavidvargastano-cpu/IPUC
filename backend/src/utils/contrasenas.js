@@ -1,4 +1,6 @@
-import { randomBytes, scrypt, timingSafeEqual } from "node:crypto";
+
+
+import { randomBytes, randomInt, scrypt, timingSafeEqual } from "node:crypto";
 import { promisify } from "node:util";
 
 // scrypt trabaja con "callbacks"; promisify lo convierte para usar await
@@ -58,4 +60,20 @@ export async function verificarContrasena(contrasena, guardado) {
   } catch {
     return false;
   }
+}
+
+
+// Alfabeto sin caracteres que se confunden al leerlos (0/O, 1/l/I),
+// para que sea facil dictar la contrasena por telefono o leerla en un papel.
+const ALFABETO_TEMPORAL = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
+
+// Genera una contrasena temporal aleatoria (12 caracteres).
+// randomInt es aleatorio de verdad y reparte las probabilidades por igual.
+// NUNCA se usa Math.random() para contrasenas: es predecible.
+export function generarContrasenaTemporal(largo = 12) {
+  let clave = "";
+  for (let i = 0; i < largo; i++) {
+    clave += ALFABETO_TEMPORAL[randomInt(ALFABETO_TEMPORAL.length)];
+  }
+  return clave;
 }
