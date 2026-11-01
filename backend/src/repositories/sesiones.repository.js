@@ -13,7 +13,8 @@ export async function crearSesion(usuarioId, tokenHash, expiraEn) {
 // y la cuenta sigue activa. Si no, devuelve null.
 export async function buscarUsuarioDeSesion(tokenHash) {
   const resultado = await pool.query(
-    `SELECT u.id, u.nombre_completo AS nombre, u.email, u.rol
+        `SELECT u.id, u.nombre_completo AS nombre, u.email, u.rol,
+            u.debe_cambiar_clave AS "debeCambiarClave"
        FROM sesiones s
        JOIN usuarios u ON u.id = s.usuario_id
       WHERE s.token_hash = $1

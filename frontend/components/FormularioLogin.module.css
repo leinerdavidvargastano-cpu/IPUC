@@ -105,3 +105,49 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+
+/* Aviso informativo dentro de la tarjeta */
+.aviso {
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--azul-claro);
+  color: var(--azul-oscuro);
+  font-size: 0.88rem;
+}
+
+/* Texto de ayuda bajo un campo */
+.ayuda {
+  margin: -8px 0 16px;
+  font-size: 0.8rem;
+  color: var(--texto-secundario);
+}
+
+/* Casilla "Mostrar las contrasenas" */
+.mostrar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+/* Enlace o boton discreto debajo del boton principal */
+.enlaceSecundario {
+  align-self: center;
+  margin-top: 16px;
+  padding: 6px;
+  border: none;
+  background: none;
+  color: var(--azul-principal);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.enlaceSecundario:hover {
+  text-decoration: underline;
+}

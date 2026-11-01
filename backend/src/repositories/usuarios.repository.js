@@ -132,3 +132,44 @@ export async function restablecerClaveUsuario(id, passwordHash, adminId) {
     return despues.rows[0];
   });
 }
+
+
+// Devuelve el hash de la contrasena de una cuenta (o null si no existe).
+// Solo se usa para comprobar la contrasena actual al cambiarla.
+export async function buscarPasswordHashPorId(id) {
+  const resultado = await pool.query(
+    `SELECT password_hash AS "passwordHash" FROM usuarios WHERE id = $1`,
+    [id]
+  );
+
+  return resultado.rows[0]?.passwordHash ?? null;
+}
+
+// La persona cambia SU PROPIA contrasena.
+// - Quita la marca de "contrasena temporal".
+// - Cierra las demas sesiones (otros dispositivos), conservando la actual.
+export async function cambiarClavePropia(id, nuevoHash, tokenHashActual) {
+  return enTransaccion(async (cliente) => {
+    await cliente.query(
+      `UPDATE usuarios
+          SET password_hash = $2, debe_cambiar_clave = FALSE
+        WHERE id = $1`,
+      [id, nuevoHash]
+    );
+
+    await cliente.query(
+      `DELETE FROM sesiones WHERE usuario_id = $1 AND token_hash <> $2`,
+      [id, tokenHashActual]
+    );
+
+    // En la auditoria queda CONSTANCIA del cambio, nunca la contrasena
+    await registrarAuditoria(cliente, {
+      usuarioId: id,
+      accion: "editar",
+      entidad: "usuario",
+      entidadId: id,
+      antes: null,
+      despues: { claveCambiada: true },
+    });
+  });
+}

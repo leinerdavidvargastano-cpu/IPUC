@@ -42,7 +42,14 @@ export default function SesionProvider({ children }) {
 
         if (!respuesta.ok) throw new Error("Respuesta no valida");
 
-        const datos = await respuesta.json();
+                const datos = await respuesta.json();
+
+        // Entro con una contrasena temporal: debe cambiarla antes de trabajar
+        if (datos.debeCambiarClave) {
+          router.replace("/cambiar-clave");
+          return;
+        }
+
         if (activo) {
           setUsuario(datos);
           setEstado("autenticado");

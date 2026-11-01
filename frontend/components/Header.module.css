@@ -99,3 +99,9 @@
 }
 
 
+/* El boton de cambiar contrasena se resalta en azul (no en rojo) */
+.clave:hover {
+  background: var(--azul-claro);
+  color: var(--azul-principal);
+}
+

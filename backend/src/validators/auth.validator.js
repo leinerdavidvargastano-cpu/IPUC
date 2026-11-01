@@ -13,3 +13,14 @@ export const esquemaLogin = z.object({
     .min(1, "La contraseña es obligatoria.")
     .max(200, "La contraseña es demasiado larga."),
 });
+
+export const esquemaCambiarClave = z.object({
+  contrasenaActual: z
+    .string({ error: "Escribe tu contraseña actual." })
+    .min(1, "Escribe tu contraseña actual.")
+    .max(200, "La contraseña es demasiado larga."),
+  contrasenaNueva: z
+    .string({ error: "Escribe la contraseña nueva." })
+    .min(1, "Escribe la contraseña nueva.")
+    .max(200, "La contraseña es demasiado larga."),
+});

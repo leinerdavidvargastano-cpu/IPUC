@@ -1,11 +1,16 @@
-import { esquemaLogin } from "../validators/auth.validator.js";
-import { buscarUsuarioPorEmail } from "../repositories/usuarios.repository.js";
+import { esquemaLogin, esquemaCambiarClave } from "../validators/auth.validator.js";
+import {
+  buscarUsuarioPorEmail,
+  buscarPasswordHashPorId,
+  cambiarClavePropia,
+} from "../repositories/usuarios.repository.js";
 import {
   crearSesion,
   eliminarSesion,
   eliminarSesionesVencidas,
 } from "../repositories/sesiones.repository.js";
 import { hashearContrasena, verificarContrasena } from "../utils/contrasenas.js";
+import { validarContrasenaNueva } from "../utils/politicaContrasenas.js";
 import { generarToken, hashearToken } from "../utils/tokens.js";
 import { NOMBRE_COOKIE, DURACION_SESION_MS, opcionesCookie } from "../config/sesion.js";
 
@@ -69,6 +74,44 @@ export async function cerrarSesion(req, res) {
 
 // GET /api/auth/yo  (devuelve quien tiene la sesion abierta)
 export function obtenerYo(req, res) {
-  // "autenticar" ya comprobo la sesion y dejo los datos en req.usuario
+  // El guardia ya comprobo la sesion y dejo los datos en req.usuario
   res.json(req.usuario);
+}
+
+// POST /api/auth/cambiar-clave
+export async function cambiarClave(req, res) {
+  const validacion = esquemaCambiarClave.safeParse(req.body);
+
+  if (!validacion.success) {
+    return res.status(400).json({ mensaje: "Escribe tu contraseña actual y la nueva." });
+  }
+
+  const { contrasenaActual, contrasenaNueva } = validacion.data;
+
+  // 1) La contrasena actual debe ser correcta (aunque la sesion este abierta,
+  //    asi nadie que encuentre un computador desatendido puede cambiarla)
+  const guardado = await buscarPasswordHashPorId(req.usuario.id);
+  const correcta = guardado ? await verificarContrasena(contrasenaActual, guardado) : false;
+
+  if (!correcta) {
+    // 400 y no 401: aqui 401 significaria "sesion vencida" para el frontend
+    return res.status(400).json({ mensaje: "La contraseña actual no es correcta." });
+  }
+
+  // 2) La nueva debe cumplir la politica
+  const problema = validarContrasenaNueva(contrasenaNueva, {
+    email: req.usuario.email,
+    nombre: req.usuario.nombre,
+    contrasenaActual,
+  });
+
+  if (problema) {
+    return res.status(400).json({ mensaje: problema });
+  }
+
+  // 3) Guardar la huella nueva y cerrar las demas sesiones
+  const nuevoHash = await hashearContrasena(contrasenaNueva);
+  await cambiarClavePropia(req.usuario.id, nuevoHash, hashearToken(req.cookies[NOMBRE_COOKIE]));
+
+  res.status(204).end();
 }

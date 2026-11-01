@@ -2,16 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, ClipboardList, Table, LifeBuoy } from "lucide-react";
-import EstadoServidor from "./EstadoServidor"; // NUEVO
+import { LayoutDashboard, ClipboardList, Table, UsersRound, LifeBuoy } from "lucide-react";
+import EstadoServidor from "./EstadoServidor";
+import { useSesion } from "./SesionProvider";
 import styles from "./Sidebar.module.css";
 
-// Lista de secciones del menu. Si algun dia agregamos otra seccion,
-// solo se anade un elemento aqui.
+// Lista de secciones del menu. "soloAdmin" oculta el enlace a los secretarios.
 const enlaces = [
   { href: "/inicio", texto: "Inicio", Icono: LayoutDashboard },
   { href: "/llenar-datos", texto: "Llenar datos", Icono: ClipboardList },
   { href: "/ver-datos", texto: "Ver datos", Icono: Table },
+  { href: "/cuentas", texto: "Cuentas", Icono: UsersRound, soloAdmin: true },
   { href: "/ayuda", texto: "Ayuda", Icono: LifeBuoy },
 ];
 
@@ -19,6 +20,10 @@ export default function Sidebar({ abierto, onCerrar }) {
   // usePathname devuelve la URL actual (por ejemplo "/inicio").
   // La usamos para resaltar el enlace de la seccion donde estamos.
   const rutaActual = usePathname();
+  const { usuario } = useSesion();
+
+  // Cada persona ve solo las secciones que le corresponden
+  const visibles = enlaces.filter((enlace) => !enlace.soloAdmin || usuario.rol === "admin");
 
   return (
     <>
@@ -38,14 +43,13 @@ export default function Sidebar({ abierto, onCerrar }) {
         </div>
 
         <nav className={styles.nav} aria-label="Navegación principal">
-          {/* .map recorre la lista y crea un enlace por cada elemento */}
-          {enlaces.map(({ href, texto, Icono }) => {
-                        const activo = rutaActual === href || rutaActual.startsWith(`${href}/`);
+          {visibles.map(({ href, texto, Icono }) => {
+            const activo = rutaActual === href || rutaActual.startsWith(`${href}/`);
             return (
               <Link
-                key={href} // React necesita una "key" unica en cada elemento de una lista
+                key={href}
                 href={href}
-                onClick={onCerrar} // en celular, cierra el menu al elegir una seccion
+                onClick={onCerrar}
                 aria-current={activo ? "page" : undefined}
                 className={`${styles.enlace} ${activo ? styles.activo : ""}`}
               >
@@ -56,7 +60,7 @@ export default function Sidebar({ abierto, onCerrar }) {
           })}
         </nav>
 
-        <EstadoServidor /> {/* NUEVO */}
+        <EstadoServidor />
         <p className={styles.pie}>Versión de demostración</p>
       </aside>
     </>

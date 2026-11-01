@@ -1,0 +1,209 @@
+/* ---------- Barra superior ---------- */
+.barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.contador {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--texto-secundario);
+}
+
+.botonCrear {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 10px;
+  background: var(--azul-principal);
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.botonCrear:hover {
+  background: #1d4ed8;
+}
+
+/* ---------- Formulario de cuenta nueva ---------- */
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.etiqueta {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.entrada {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: var(--superficie);
+  color: var(--texto);
+}
+
+.entrada:focus {
+  outline: none;
+  border-color: var(--azul-secundario);
+  box-shadow: 0 0 0 3px var(--azul-claro);
+}
+
+.entradaError {
+  border-color: var(--error);
+}
+
+.errorCampo {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--error);
+}
+
+.errorGeneral {
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fee2e2;
+  color: #991b1b;
+  font-size: 0.88rem;
+}
+
+/* ---------- Tabla ---------- */
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.botonTabla {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: var(--superficie);
+  color: var(--texto);
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.botonTabla:hover {
+  background: var(--azul-claro);
+}
+
+.botonTabla:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.botonPeligro:hover {
+  background: #fee2e2;
+  color: var(--error);
+}
+
+.estado {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.estadoActiva {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.estadoInactiva {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+/* Etiqueta "Tu" junto a tu propia cuenta */
+.tu {
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--azul-claro);
+  color: var(--azul-principal);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+/* ---------- Contrasena temporal ---------- */
+.cajaClave {
+  margin: 16px 0;
+  padding: 16px;
+  border: 2px dashed var(--azul-secundario);
+  border-radius: 12px;
+  background: var(--azul-claro);
+  text-align: center;
+}
+
+.clave {
+  margin: 0;
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--azul-oscuro);
+  user-select: all; /* un clic selecciona toda la contrasena */
+  word-break: break-all;
+}
+
+.copiar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 8px 14px;
+  border: 1px solid var(--azul-principal);
+  border-radius: 8px;
+  background: var(--superficie);
+  color: var(--azul-principal);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.avisoClave {
+  margin: 0 0 16px;
+  font-size: 0.9rem;
+  color: var(--texto-secundario);
+}
+
+/* ---------- Boton principal de las ventanas ---------- */
+.confirmar {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 10px;
+  background: var(--azul-principal);
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.confirmar:hover {
+  background: #1d4ed8;
+}
+
+.confirmar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

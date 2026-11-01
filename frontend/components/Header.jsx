@@ -1,6 +1,7 @@
 "use client"; // usa el contexto de sesion
 
-import { Menu, UserRound, LogOut } from "lucide-react";
+import Link from "next/link";
+import { Menu, UserRound, KeyRound, LogOut } from "lucide-react";
 import { useSesion } from "./SesionProvider";
 import styles from "./Header.module.css";
 
@@ -34,6 +35,14 @@ export default function Header({ onAbrirMenu }) {
         <span className={styles.avatar}>
           <UserRound size={20} aria-hidden="true" />
         </span>
+        <Link
+          href="/cambiar-clave"
+          className={`${styles.salir} ${styles.clave}`}
+          aria-label="Cambiar contraseña"
+          title="Cambiar contraseña"
+        >
+          <KeyRound size={20} />
+        </Link>
         <button
           type="button"
           className={styles.salir}
