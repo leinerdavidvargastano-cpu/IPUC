@@ -93,3 +93,55 @@ export function finDeSemana(fechaIso) {
 export function hoyEnColombia() {
   return new Date().toLocaleDateString("en-CA", { timeZone: "America/Bogota" });
 }
+
+// ---------- Semanas de un mes ----------
+
+// Dias entre dos fechas ("2026-10-01" a "2026-10-04" = 3)
+export function diasEntre(desdeIso, hastaIso) {
+  return Math.round((aFechaUtc(hastaIso).getTime() - aFechaUtc(desdeIso).getTime()) / MS_POR_DIA);
+}
+
+export function primerDiaDelMes(anio, mes) {
+  return `${anio}-${String(mes).padStart(2, "0")}-01`;
+}
+
+// El dia 0 del mes siguiente es el ultimo dia de este mes
+export function ultimoDiaDelMes(anio, mes) {
+  const ultimo = new Date(Date.UTC(anio, mes, 0)).getUTCDate();
+  return `${anio}-${String(mes).padStart(2, "0")}-${String(ultimo).padStart(2, "0")}`;
+}
+
+// Semanas (lunes a domingo) que tocan el mes, recortadas a sus limites.
+//  - lunes y domingo: la semana completa
+//  - desde y hasta:   la parte que cae dentro del mes
+//  - parcial:         true si la semana no cabe entera en el mes
+// Las fechas "AAAA-MM-DD" se pueden comparar como texto.
+export function semanasDelMes(anio, mes) {
+  const primerDia = primerDiaDelMes(anio, mes);
+  const ultimoDia = ultimoDiaDelMes(anio, mes);
+
+  const semanas = [];
+  let lunes = inicioDeSemana(primerDia);
+  let numero = 1;
+
+  while (lunes <= ultimoDia) {
+    const domingo = sumarDias(lunes, 6);
+    const desde = lunes < primerDia ? primerDia : lunes;
+    const hasta = domingo > ultimoDia ? ultimoDia : domingo;
+
+    semanas.push({
+      numero,
+      lunes,
+      domingo,
+      desde,
+      hasta,
+      dias: diasEntre(desde, hasta) + 1,
+      parcial: lunes < primerDia || domingo > ultimoDia,
+    });
+
+    lunes = sumarDias(lunes, 7);
+    numero += 1;
+  }
+
+  return semanas;
+}
