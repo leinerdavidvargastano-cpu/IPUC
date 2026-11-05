@@ -124,7 +124,7 @@ export function armarMensual({ anio, mes, desde, hasta, semanas, cultos }) {
 }
 
 // Totales de dos listas de cultos y su diferencia. Una lista vacia es "sin datos" (null).
-function compararListas(actual, anterior) {
+export function compararListas(actual, anterior) {
   const totalActual = actual.length > 0 ? sumar(actual.map((culto) => culto.total)) : null;
   const totalAnterior = anterior.length > 0 ? sumar(anterior.map((culto) => culto.total)) : null;
 

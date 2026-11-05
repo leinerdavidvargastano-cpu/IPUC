@@ -13,6 +13,17 @@ export function formatearFecha(fechaIso) {
   });
 }
 
+// Igual, pero sin el día de la semana: "25 oct 2026"
+export function formatearFechaCorta(fechaIso) {
+  const [anio, mes, dia] = fechaIso.split("-").map(Number);
+  const fecha = new Date(anio, mes - 1, dia);
+  return fecha.toLocaleDateString("es-CO", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
+
 // Convierte 150000 en "$ 150.000" (pesos colombianos, sin decimales)
 export function formatearPesos(valor) {
   return new Intl.NumberFormat("es-CO", {

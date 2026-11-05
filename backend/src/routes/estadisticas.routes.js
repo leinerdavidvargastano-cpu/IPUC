@@ -5,15 +5,18 @@ import {
   obtenerMensual,
   obtenerAnual,
 } from "../controllers/estadisticas.controller.js";
+import { obtenerResumen } from "../controllers/resumen.controller.js";
 
 const router = Router();
 
 // Cualquier persona con sesion iniciada puede ver las estadisticas
 router.use(autenticar);
 
+// GET /api/estadisticas/resumen   (tarjetas del Inicio)
 // GET /api/estadisticas/semanal
 // GET /api/estadisticas/mensual
 // GET /api/estadisticas/anual
+router.get("/resumen", obtenerResumen);
 router.get("/semanal", obtenerSemanal);
 router.get("/mensual", obtenerMensual);
 router.get("/anual", obtenerAnual);

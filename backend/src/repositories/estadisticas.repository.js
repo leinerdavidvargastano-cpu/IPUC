@@ -34,3 +34,22 @@ export async function listarCultosEntre(desde, hasta) {
 
   return resultado.rows;
 }
+
+// El culto registrado mas reciente (por fecha; si hay dos el mismo dia,
+// el que va mas tarde en el orden de los tipos). Devuelve null si no hay ninguno.
+export async function obtenerUltimoCulto() {
+  const resultado = await pool.query(
+    `SELECT c.id,
+            c.fecha,
+            c.tipo_culto_id    AS "tipoCultoId",
+            t.nombre           AS "tipoCulto",
+            c.total_asistentes AS total
+       FROM cultos c
+       JOIN tipos_culto t ON t.id = c.tipo_culto_id
+      WHERE c.eliminado_en IS NULL
+      ORDER BY c.fecha DESC, t.orden DESC
+      LIMIT 1`
+  );
+
+  return resultado.rows[0] ?? null;
+}
