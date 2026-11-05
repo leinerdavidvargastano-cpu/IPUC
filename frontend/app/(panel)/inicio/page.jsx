@@ -14,19 +14,19 @@ export default function InicioPage() {
         descripcion="Resumen de la asistencia de la congregación."
       />
 
-      {/* Tarjetas con datos REALES */}
+      {/* Datos REALES */}
       <ResumenInicio />
+      <EstadisticasSemanales />
 
-      {/* Las graficas todavia usan datos de demostracion */}
+      {/* Las secciones de abajo todavia usan datos de demostracion */}
       <p className={styles.aviso} style={{ marginTop: 40, marginBottom: 0 }}>
         <Info size={18} aria-hidden="true" />
         <span>
-          <strong>Datos de demostración:</strong> las gráficas de abajo todavía usan cifras
-          ficticias. Se conectan en los próximos pasos.
+          <strong>Datos de demostración:</strong> las gráficas mensual y anual de abajo todavía
+          usan cifras ficticias. Se conectan en los próximos pasos.
         </span>
       </p>
 
-      <EstadisticasSemanales />
       <EstadisticasMensuales />
       <EstadisticasAnuales />
     </>
