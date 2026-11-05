@@ -1,0 +1,109 @@
+.seccion {
+  margin-top: 24px;
+}
+
+.panel {
+  min-width: 0;
+  padding: 20px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+}
+
+.encabezado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 24px;
+  margin-bottom: 16px;
+}
+
+.titulo {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.periodo {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--texto-secundario);
+}
+
+/* Los tres datos de arriba de la grafica */
+.datos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 32px;
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.dato {
+  display: flex;
+  flex-direction: column;
+}
+
+.datoEtiqueta {
+  font-size: 0.78rem;
+  color: var(--texto-secundario);
+}
+
+.datoValor {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* La grafica grande: necesita una altura fija para que se vea */
+.area {
+  width: 100%;
+  height: 460px;
+}
+
+.nota {
+  margin: 12px 0 0;
+  font-size: 0.82rem;
+  color: var(--texto-secundario);
+}
+
+/* Globo al pasar el mouse */
+.globo {
+  padding: 8px 12px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  box-shadow: var(--sombra);
+}
+
+.globoTitulo {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--texto-secundario);
+}
+
+.globoTotal {
+  margin: 0;
+  font-weight: 700;
+  color: var(--azul-principal);
+}
+
+.globoLista {
+  margin: 6px 0 0;
+  padding: 6px 0 0;
+  border-top: 1px solid var(--borde);
+  list-style: none;
+  font-size: 0.82rem;
+}
+
+@media (max-width: 700px) {
+  .panel {
+    padding: 14px;
+  }
+
+  .area {
+    height: 320px;
+  }
+}

@@ -1,5 +1,5 @@
 import EncabezadoPagina from "@/components/EncabezadoPagina";
-import ResumenInicio from "@/components/ResumenInicio";
+import PanelInicio from "@/components/PanelInicio";
 import EstadisticasSemanales from "@/components/EstadisticasSemanales";
 import EstadisticasMensuales from "@/components/EstadisticasMensuales";
 import EstadisticasAnuales from "@/components/EstadisticasAnuales";
@@ -12,7 +12,9 @@ export default function InicioPage() {
         descripcion="Resumen de la asistencia de la congregación."
       />
 
-      <ResumenInicio />
+      {/* Filtro de periodo + tarjetas + grafica general */}
+      <PanelInicio />
+
       <EstadisticasSemanales />
       <EstadisticasMensuales />
       <EstadisticasAnuales />

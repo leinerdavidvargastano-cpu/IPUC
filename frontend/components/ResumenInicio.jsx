@@ -138,12 +138,21 @@ function construirTarjetas(datos) {
   ];
 }
 
-export default function ResumenInicio() {
+export default function ResumenInicio({ alCambiarFiltros }) {
   const [filtros, setFiltros] = useState(FILTROS_INICIALES);
+  
+  // Avisa a la pagina cada vez que cambian los filtros (la grafica general los comparte)
+  useEffect(() => {
+    if (alCambiarFiltros) alCambiarFiltros(filtros);
+  }, [filtros, alCambiarFiltros]);
+
+
 
   // Guardamos el resultado JUNTO con la consulta que lo produjo ("clave").
   // Asi sabemos si lo que mostramos corresponde a los filtros actuales
   // o si todavia estamos esperando la respuesta de una consulta nueva.
+  
+  
   const [resultado, setResultado] = useState({ clave: null, datos: null, error: "" });
 
   const consulta = construirConsulta(filtros);
