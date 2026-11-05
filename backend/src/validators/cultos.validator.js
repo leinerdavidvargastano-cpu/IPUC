@@ -10,7 +10,8 @@ const entero = (etiqueta) =>
   z
     .number({ error: `${etiqueta} es obligatorio y debe ser un número.` })
     .int(`${etiqueta} debe ser un número entero.`)
-    .min(0, `${etiqueta} no puede ser negativo.`);
+    .min(0, `${etiqueta} no puede ser negativo.`)
+    .max(100000, `${etiqueta} no puede superar 100.000.`);
 
 // Texto opcional: se recorta, se limita el largo y, si queda vacio, pasa a null
 const textoOpcional = (etiqueta, maximo) =>
@@ -46,6 +47,7 @@ export const esquemaCrearCulto = z.object({
     .number({ error: "La ofrenda debe ser un número." })
     .int("La ofrenda debe ser un número entero.")
     .min(0, "La ofrenda no puede ser negativa.")
+    .max(100_000_000_000, "La ofrenda no puede superar 100.000.000.000.")
     .nullish()
     .transform((valor) => valor ?? null),
 
