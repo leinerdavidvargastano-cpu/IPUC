@@ -17,17 +17,17 @@ export default function InicioPage() {
       {/* Datos REALES */}
       <ResumenInicio />
       <EstadisticasSemanales />
+      <EstadisticasMensuales />
 
-      {/* Las secciones de abajo todavia usan datos de demostracion */}
+      {/* La seccion de abajo todavia usa datos de demostracion */}
       <p className={styles.aviso} style={{ marginTop: 40, marginBottom: 0 }}>
         <Info size={18} aria-hidden="true" />
         <span>
-          <strong>Datos de demostración:</strong> las gráficas mensual y anual de abajo todavía
-          usan cifras ficticias. Se conectan en los próximos pasos.
+          <strong>Datos de demostración:</strong> la gráfica anual de abajo todavía usa cifras
+          ficticias. Se conecta en el próximo paso.
         </span>
       </p>
 
-      <EstadisticasMensuales />
       <EstadisticasAnuales />
     </>
   );
